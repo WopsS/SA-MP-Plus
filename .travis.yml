@@ -1,0 +1,73 @@
+language: cpp
+sudo: required
+dist: trusty
+
+env:
+    global:
+        - FMT_DIR=$TRAVIS_BUILD_DIR/fmt
+        - PREMAKE_DIR=$TRAVIS_BUILD_DIR/Premake
+        - RAKNET_DIR=$TRAVIS_BUILD_DIR/RakNet
+    matrix:
+        - BUILD_TYPE=Debug
+        - BUILD_TYPE=Release
+
+addons:
+    apt:
+        sources:
+            - ubuntu-toolchain-r-test
+        packages:
+            - cmake
+            - gcc-5
+            - gcc-5-multilib
+            - g++-5
+            - g++-5-multilib
+            - unzip
+
+cache:
+  directories:
+    - fmt
+    - RakNet
+
+before_install:
+    - sudo -E dpkg --add-architecture i386
+    - sudo -E apt-get -yq update
+
+install:
+    - sudo -E apt-get -yq --no-install-suggests --no-install-recommends --force-yes install linux-libc-dev:i386
+    
+before_script:
+    - if [ ! -f "${FMT_DIR}/CMakeLists.txt" ]; then wget https://github.com/fmtlib/fmt/releases/download/3.0.0/fmt-3.0.0.zip; fi
+    - if [ ! -f "${FMT_DIR}/CMakeLists.txt" ]; then unzip fmt-*.zip; fi
+    - if [ ! -f "${FMT_DIR}/CMakeLists.txt" ]; then mv fmt-*/* fmt; fi
+
+    - if [ ! -f "${RAKNET_DIR}/CMakeLists.txt" ]; then git clone https://github.com/WopsS/RakNet.git; fi
+
+    - wget https://github.com/premake/premake-core/releases/download/v5.0.0-alpha9/premake-5.0.0-alpha9-linux.tar.gz
+    - tar xzf premake-*-linux.tar.gz -C ${PREMAKE_DIR}
+
+    - mkdir -p ${FMT_DIR}/build
+    - mkdir -p ${RAKNET_DIR}/Build
+
+    - mkdir -p ${TRAVIS_BUILD_DIR}/Includes/Common/fmt
+    - mkdir ${TRAVIS_BUILD_DIR}/Libs
+
+script:
+    - cd ${FMT_DIR}/build
+    - CC=gcc-5 CXX=g++-5 cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_CXX_FLAGS=-m32 -DCMAKE_C_FLAGS=-m32 -DFMT_DOC=OFF -DFMT_INSTALL=OFF -DFMT_TEST=OFF
+    - make CXX=g++-5
+
+    - cd ${RAKNET_DIR}/Build
+    - CC=gcc-5 CXX=g++-5 cmake .. -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_CXX_FLAGS=-m32 -DCMAKE_C_FLAGS=-m32 -DRAKNET_ENABLE_SAMPLES=OFF -DRAKNET_ENABLE_DLL=OFF -DRAKNET_GENERATE_INCLUDE_ONLY_DIR=ON
+    - make CXX=g++-5
+
+    - ln -s ${FMT_DIR}/fmt/*.h ${TRAVIS_BUILD_DIR}/Includes/Common/fmt
+    - ln -s ${RAKNET_DIR}/include/RakNet ${TRAVIS_BUILD_DIR}/Includes/Common
+
+    - ln -s ${FMT_DIR}/build/fmt/libfmt.a ${TRAVIS_BUILD_DIR}/Libs
+    - ln -s ${RAKNET_DIR}/Build/Lib/LibStatic/libRakNetLibStatic.a ${TRAVIS_BUILD_DIR}/Libs
+
+    - cd ${PREMAKE_DIR}
+    - chmod 755 ./MakeGMakeProjects.sh
+    - ./MakeGMakeProjects.sh
+    - cd Projects
+    - make CONFIG=${BUILD_TYPE} CXX=g++-5

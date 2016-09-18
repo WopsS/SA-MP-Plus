@@ -1,0 +1,77 @@
+version: '{build}'
+image: Visual Studio 2015
+clone_depth: 1
+
+configuration:
+    - Debug
+    - Release
+
+environment:
+    FMT_DIR: '%APPVEYOR_BUILD_FOLDER%\fmt'
+    MINHOOK_DIR: '%APPVEYOR_BUILD_FOLDER%\minhook'
+    PREMAKE_DIR: '%APPVEYOR_BUILD_FOLDER%\Premake'
+    RAKNET_DIR: '%APPVEYOR_BUILD_FOLDER%\RakNet'
+
+pull_requests:
+    do_not_increment_build_number: true
+
+install:
+    - git submodule update --init --recursive
+
+    - appveyor DownloadFile https://github.com/fmtlib/fmt/releases/download/3.0.0/fmt-3.0.0.zip
+    - 7z x fmt-*.zip
+    - del fmt-*.zip
+    - move fmt-* fmt
+
+    - git clone --depth=1 https://github.com/TsudaKageyu/minhook.git
+    - git clone --depth=1 https://github.com/WopsS/RakNet.git
+
+    - appveyor DownloadFile https://github.com/premake/premake-core/releases/download/v5.0.0-alpha9/premake-5.0.0-alpha9-windows.zip
+    - 7z x  premake-*-windows.zip -o"%PREMAKE_DIR%"
+
+before_build:
+    - mkdir "%FMT_DIR%\build"
+    - mkdir "%RAKNET_DIR%\Build"
+
+    - mkdir "%APPVEYOR_BUILD_FOLDER%\Includes\Common"
+    - mkdir "%APPVEYOR_BUILD_FOLDER%\Includes\Client"
+    - mkdir "%APPVEYOR_BUILD_FOLDER%\Libs"
+
+build_script:
+    - cd "%FMT_DIR%\build"
+    - cmake .. -G "Visual Studio 14 2015" -DFMT_DOC=OFF -DFMT_INSTALL=OFF -DFMT_USE_CPP11=ON -DFMT_TEST=OFF
+    - MSBuild.exe "FMT.sln" /verbosity:minimal /p:Configuration=%CONFIGURATION%
+
+    - cd "%MINHOOK_DIR%\build\VC15"
+    - MSBuild.exe "MinHookVC15.sln" /verbosity:minimal /p:Configuration=%CONFIGURATION%
+
+    - cd "%RAKNET_DIR%\Build"
+    - cmake .. -G "Visual Studio 14 2015" -DRAKNET_GENERATE_INCLUDE_ONLY_DIR=ON -DRAKNET_ENABLE_DLL=OFF -DRAKNET_ENABLE_SAMPLES=OFF
+    - MSBuild.exe "RakNet.sln" /verbosity:minimal /p:Configuration=%CONFIGURATION%
+
+    - mklink "%APPVEYOR_BUILD_FOLDER%\Includes\Client\MinHook.h" "%MINHOOK_DIR%\include\MinHook.h"
+    - mklink /D "%APPVEYOR_BUILD_FOLDER%\Includes\Common\fmt" "%FMT_DIR%\fmt"
+    - mklink /D "%APPVEYOR_BUILD_FOLDER%\Includes\Common\RakNet" "%RAKNET_DIR%\include\RakNet"
+
+    - mklink "%APPVEYOR_BUILD_FOLDER%\Libs\fmt.lib" "%FMT_DIR%\build\fmt\%CONFIGURATION%\fmt.lib"
+    - mklink "%APPVEYOR_BUILD_FOLDER%\Libs\libMinHook.x86.lib" "%MINHOOK_DIR%\build\VC15\lib\%CONFIGURATION%\libMinHook.x86.lib"
+    - mklink "%APPVEYOR_BUILD_FOLDER%\Libs\RakNetLibStatic.lib" "%RAKNET_DIR%\Build\Lib\LibStatic\%CONFIGURATION%\RakNetLibStatic.lib"
+
+    - cd "%PREMAKE_DIR%"
+    - MakeVS2015Projects.bat
+    - cd Projects
+    - MSBuild.exe "SA-MP+.sln" /verbosity:minimal /p:Configuration=%CONFIGURATION%
+
+after_build:
+    - cd "%APPVEYOR_BUILD_FOLDER%\Build\Server"
+    - mkdir plugins
+    - move samp-plus*.* plugins
+
+artifacts:
+    - path: Build\Client
+      name: samp-plus-client
+      type: zip
+
+    - path: Build\Server
+      name: samp-plus-server
+      type: zip

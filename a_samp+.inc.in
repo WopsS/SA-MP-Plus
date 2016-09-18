@@ -1,0 +1,9 @@
+/*
+ *	SA-MP+ v%s
+ */
+
+#if defined _sampplus_included
+	#endinput
+#endif
+
+#define _sampplus_included
