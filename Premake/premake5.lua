@@ -65,7 +65,7 @@ workspace ("SA-MP+")
 
             includedirs { config["includes"], "$(DXSDK_DIR)Include", "../Includes/Client", "../Source/Client" }
             libdirs { config["libsPath"] }
-            links { config["libs"], "libMinHook.x86", "SharedLib" }
+            links { config["libs"], "dxguid", "libMinHook.x86", "SharedLib" }
 
             files { "../Source/Client/**.cpp", "../Source/Client/**.hpp" }
     end

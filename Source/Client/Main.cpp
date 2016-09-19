@@ -1,4 +1,5 @@
 #include <stdafx.hpp>
+#include <Hooks/DirectInput.hpp>
 #include <Hooks/DirectX.hpp>
 
 BOOL APIENTRY DllMain(HMODULE Module, DWORD Reason, LPVOID Reserved)
@@ -8,6 +9,8 @@ BOOL APIENTRY DllMain(HMODULE Module, DWORD Reason, LPVOID Reserved)
 		case DLL_PROCESS_ATTACH:
 		{
 			Hooks::Initialize();
+
+			Hooks::DirectInput::Hook();
 			Hooks::DirectX::Hook();
 
 			break;
