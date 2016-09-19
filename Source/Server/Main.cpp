@@ -7,7 +7,7 @@ PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports()
 
 PLUGIN_EXPORT bool PLUGIN_CALL Load(void** Data)
 {
-	sampgdk::logprintf("  SA-MP+: v%s successfully loaded.", SAMPPLUS_VERSION);
+	sampgdk::logprintf("  SA-MP+: v%s successfully loaded.", SAMP_PLUS_VERSION);
 	return sampgdk::Load(Data);
 }
 
