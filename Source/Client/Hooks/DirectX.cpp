@@ -7,7 +7,7 @@ Direct3DCreate9_t Direct3DCreate9Real;
 
 IDirect3D9* WINAPI Hooks::DirectX::Direct3DCreate9(UINT SDKVersion)
 {
-	IDirect3D9* IDirect3D9 = Direct3DCreate9Real(SDKVersion);
+	auto IDirect3D9 = Direct3DCreate9Real(SDKVersion);
 	auto Direct3D9 = new Proxies::Direct3D9(IDirect3D9);
 
 	return Direct3D9;
