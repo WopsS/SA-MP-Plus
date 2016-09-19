@@ -63,7 +63,7 @@ workspace ("SA-MP+")
             pchheader ("stdafx.hpp")
             pchsource ("../Source/Client/stdafx.cpp")
 
-            includedirs { config["includes"], "../Includes/Client", "../Source/Client" }
+            includedirs { config["includes"], "$(DXSDK_DIR)Include", "../Includes/Client", "../Source/Client" }
             libdirs { config["libsPath"] }
             links { config["libs"], "libMinHook.x86", "SharedLib" }
 

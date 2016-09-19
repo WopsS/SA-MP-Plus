@@ -6,6 +6,8 @@
 
 #include <Windows.h>
 
+#include <d3d9.h>
+
 #include <MinHook.h>
 #include <SharedLib.hpp>
 #include <Version.hpp>
