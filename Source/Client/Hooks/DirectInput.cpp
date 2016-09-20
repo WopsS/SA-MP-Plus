@@ -2,12 +2,11 @@
 #include <Hooks/DirectInput.hpp>
 #include <Proxies/DirectInput/DirectInput8.hpp>
 
-typedef HRESULT(WINAPI* DirectInput8Create_t)(HINSTANCE, DWORD, REFIID, LPVOID*, LPUNKNOWN);
-DirectInput8Create_t DirectInput8CreateReal;
+Hooks::DirectInput::Private::DirectInput8Create_t Hooks::DirectInput::Private::Real;
 
-HRESULT WINAPI Hooks::DirectInput::DirectInput8Create(HINSTANCE hinst, DWORD dwVersion, REFIID riidltf, LPVOID* ppvOut, LPUNKNOWN punkOuter)
+HRESULT WINAPI Hooks::DirectInput::Private::DirectInput8Create(HINSTANCE hinst, DWORD dwVersion, REFIID riidltf, LPVOID* ppvOut, LPUNKNOWN punkOuter)
 {
-	auto Result = DirectInput8CreateReal(hinst, dwVersion, riidltf, ppvOut, punkOuter);
+	auto Result = Real(hinst, dwVersion, riidltf, ppvOut, punkOuter);
 
 	if (SUCCEEDED(Result))
 	{
@@ -19,5 +18,5 @@ HRESULT WINAPI Hooks::DirectInput::DirectInput8Create(HINSTANCE hinst, DWORD dwV
 
 void Hooks::DirectInput::Hook()
 {
-	Hooks::Create(L"dinput8", "DirectInput8Create", &Hooks::DirectInput::DirectInput8Create, &DirectInput8CreateReal, true);
+	Hooks::Create(L"dinput8", "DirectInput8Create", &Hooks::DirectInput::Private::DirectInput8Create, &Hooks::DirectInput::Private::Real, true);
 }
