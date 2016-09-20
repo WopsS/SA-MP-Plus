@@ -1,6 +1,7 @@
 #include <stdafx.hpp>
 #include <Hooks/DirectInput.hpp>
 #include <Hooks/DirectX.hpp>
+#include <Hooks/RunningScript.hpp>
 
 BOOL APIENTRY DllMain(HMODULE Module, DWORD Reason, LPVOID Reserved)
 {
@@ -12,6 +13,7 @@ BOOL APIENTRY DllMain(HMODULE Module, DWORD Reason, LPVOID Reserved)
 
 			Hooks::DirectInput::Hook();
 			Hooks::DirectX::Hook();
+			Hooks::RunningScript::Hook();
 
 			break;
 		}
