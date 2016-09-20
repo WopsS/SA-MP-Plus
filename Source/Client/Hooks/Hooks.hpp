@@ -3,9 +3,16 @@
 namespace Hooks
 {
 	template<typename T>
-	const MH_STATUS Create(void* Target, void* Detour, T** Original)
+	const MH_STATUS Create(void* Target, void* Detour, T** Original, bool Enable)
 	{
-		return MH_CreateHook(Target, Detour, reinterpret_cast<void*>(Original));
+		auto Result = MH_CreateHook(Target, Detour, reinterpret_cast<LPVOID*>(Original));
+
+		if (Result == MH_OK)
+		{
+			Result = MH_EnableHook(Target);
+		}
+
+		return Result;
 	}
 
 	template<typename T>
