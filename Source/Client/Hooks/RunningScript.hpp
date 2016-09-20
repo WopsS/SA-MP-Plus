@@ -15,6 +15,8 @@ namespace Hooks
 			}
 		}
 
-		void Hook();
+		void Create();
+
+		void Remove();
 	}
 }

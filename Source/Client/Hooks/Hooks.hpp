@@ -60,4 +60,8 @@ namespace Hooks
 	const bool Initialize();
 
 	const bool Uninitialize();
+
+	const MH_STATUS Remove(LPVOID Target);
+
+	const MH_STATUS Remove(const std::wstring& Module, const std::string& Name);
 }

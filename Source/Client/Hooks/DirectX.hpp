@@ -12,6 +12,8 @@ namespace Hooks
 			IDirect3D9* WINAPI Direct3DCreate9(UINT SDKVersion);
 		}
 
-		void Hook();
+		void Create();
+
+		void Remove();
 	}
 }

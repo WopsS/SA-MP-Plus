@@ -11,14 +11,18 @@ BOOL APIENTRY DllMain(HMODULE Module, DWORD Reason, LPVOID Reserved)
 		{
 			Hooks::Initialize();
 
-			Hooks::DirectInput::Hook();
-			Hooks::DirectX::Hook();
-			Hooks::RunningScript::Hook();
+			Hooks::DirectInput::Create();
+			Hooks::DirectX::Create();
+			Hooks::RunningScript::Create();
 
 			break;
 		}
 		case DLL_PROCESS_DETACH:
 		{
+			Hooks::RunningScript::Remove();
+			Hooks::DirectX::Remove();
+			Hooks::DirectInput::Remove();
+
 			Hooks::Uninitialize();
 
 			break;

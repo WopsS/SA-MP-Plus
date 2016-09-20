@@ -16,7 +16,12 @@ HRESULT WINAPI Hooks::DirectInput::Private::DirectInput8Create(HINSTANCE hinst, 
 	return Result;
 }
 
-void Hooks::DirectInput::Hook()
+void Hooks::DirectInput::Create()
 {
 	Hooks::Create(L"dinput8", "DirectInput8Create", &Hooks::DirectInput::Private::DirectInput8Create, &Hooks::DirectInput::Private::Real, true);
+}
+
+void Hooks::DirectInput::Remove()
+{
+	Hooks::Remove(L"dinput8", "DirectInput8Create");
 }
