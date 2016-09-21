@@ -10,10 +10,10 @@ namespace SharedLib
 		template<typename... Args>
 		static T* GetInstance(Args&& ...args)
 		{
-			std::call_once(m_once, [](auto&&... args)
+			std::call_once(m_once, [&]()
 			{
-				m_instance = new T(decltype(args)(args)...);
-			}, std::forward<Args>(args)...);
+				m_instance = new T(std::forward<Args>(args)...);
+			});
 
 			return m_instance;
 		}
