@@ -12,17 +12,18 @@ namespace SharedLib
 		{
 			std::call_once(m_once, [](auto&&... args)
 			{
-				m_instance = std::make_unique<T>(decltype(args)(args)...);
+				m_instance = new T(decltype(args)(args)...);
 			}, std::forward<Args>(args)...);
 
-			return m_instance.get();
+			return m_instance;
 		}
 
 		static bool Release()
 		{
 			if (m_instance != nullptr)
 			{
-				m_instance.reset();
+				delete m_instance;
+				m_instance = nullptr;
 
 				return true;
 			}
@@ -37,13 +38,13 @@ namespace SharedLib
 
 	private:
 
-		static std::unique_ptr<T> m_instance;
+		static T* m_instance;
 
 		static std::once_flag m_once;
 	};
 
 	template<typename T>
-	std::unique_ptr<T> Singleton<T>::m_instance = nullptr;
+	T* Singleton<T>::m_instance = nullptr;
 
 	template<typename T>
 	std::once_flag Singleton<T>::m_once;
