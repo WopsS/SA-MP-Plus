@@ -3,4 +3,4 @@
 #include <memory>
 #include <mutex>
 
-#include <Singleton.hpp>
+#include <Singleton/Singleton.hpp>
