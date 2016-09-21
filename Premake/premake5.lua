@@ -14,6 +14,10 @@ local config =
     libsPath={ "../Build/Libs", "../Libs" }
 }
 
+if (os.is("Windows") == true) then
+    config["libs"] = table.insertflat(config["libs"], "ws2_32")
+end
+
 local function formatVersion(inputFile, outputFile)
     local inFile = io.open(inputFile, "r")
 
@@ -37,6 +41,7 @@ workspace ("SA-MP+")
     configurations { "Debug", "Release" }
     flags { "C++14" }
     location ("Projects")
+    characterset ("MBCS")
 
      filter { "action:gmake" }
         defines { "LINUX" }

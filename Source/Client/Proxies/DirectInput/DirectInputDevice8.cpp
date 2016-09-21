@@ -36,7 +36,7 @@ HRESULT Proxies::DirectInputDevice8::EnumEffects(LPDIENUMEFFECTSCALLBACK lpCallb
 	return m_original->EnumEffects(lpCallback, pvRef, dwEffType);
 }
 
-HRESULT Proxies::DirectInputDevice8::EnumEffectsInFile(LPCWSTR lpszFileName, LPDIENUMEFFECTSINFILECALLBACK pec, LPVOID pvRef, DWORD dwFlags)
+HRESULT Proxies::DirectInputDevice8::EnumEffectsInFile(LPCSTR lpszFileName, LPDIENUMEFFECTSINFILECALLBACK pec, LPVOID pvRef, DWORD dwFlags)
 {
 	return m_original->EnumEffectsInFile(lpszFileName, pec, pvRef, dwFlags);
 }
@@ -145,7 +145,7 @@ HRESULT Proxies::DirectInputDevice8::SendForceFeedbackCommand(DWORD dwFlags)
 	return m_original->SendForceFeedbackCommand(dwFlags);
 }
 
-HRESULT Proxies::DirectInputDevice8::SetActionMap(LPDIACTIONFORMATW lpdiActionFormat, LPCTSTR lptszUserName, DWORD dwFlags)
+HRESULT Proxies::DirectInputDevice8::SetActionMap(LPDIACTIONFORMAT lpdiActionFormat, LPCTSTR lptszUserName, DWORD dwFlags)
 {
 	return m_original->SetActionMap(lpdiActionFormat, lptszUserName, dwFlags);
 }
@@ -175,7 +175,7 @@ HRESULT Proxies::DirectInputDevice8::Unacquire()
 	return m_original->Unacquire();
 }
 
-HRESULT Proxies::DirectInputDevice8::WriteEffectToFile(LPCWSTR lpszFileName, DWORD dwEntries, LPDIFILEEFFECT rgDiFileEft, DWORD dwFlags)
+HRESULT Proxies::DirectInputDevice8::WriteEffectToFile(LPCSTR lpszFileName, DWORD dwEntries, LPDIFILEEFFECT rgDiFileEft, DWORD dwFlags)
 {
 	return m_original->WriteEffectToFile(lpszFileName, dwEntries, rgDiFileEft, dwFlags);
 }

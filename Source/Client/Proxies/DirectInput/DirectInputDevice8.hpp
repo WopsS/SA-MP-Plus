@@ -21,7 +21,7 @@ namespace Proxies
 
 		HRESULT __stdcall EnumEffects(LPDIENUMEFFECTSCALLBACK lpCallback, LPVOID pvRef, DWORD dwEffType);
 
-		HRESULT __stdcall EnumEffectsInFile(LPCWSTR lpszFileName, LPDIENUMEFFECTSINFILECALLBACK pec, LPVOID pvRef, DWORD dwFlags);
+		HRESULT __stdcall EnumEffectsInFile(LPCSTR lpszFileName, LPDIENUMEFFECTSINFILECALLBACK pec, LPVOID pvRef, DWORD dwFlags);
 
 		HRESULT __stdcall EnumObjects(LPDIENUMDEVICEOBJECTSCALLBACK lpCallback, LPVOID pvRef, DWORD dwFlags);
 
@@ -59,7 +59,7 @@ namespace Proxies
 
 		HRESULT __stdcall SendForceFeedbackCommand(DWORD dwFlags);
 
-		HRESULT __stdcall SetActionMap(LPDIACTIONFORMATW lpdiActionFormat, LPCTSTR lptszUserName, DWORD dwFlags);
+		HRESULT __stdcall SetActionMap(LPDIACTIONFORMAT lpdiActionFormat, LPCTSTR lptszUserName, DWORD dwFlags);
 
 		HRESULT __stdcall SetCooperativeLevel(HWND hwnd, DWORD dwFlags);
 
@@ -71,7 +71,7 @@ namespace Proxies
 
 		HRESULT __stdcall Unacquire();
 
-		HRESULT __stdcall WriteEffectToFile(LPCWSTR lpszFileName, DWORD dwEntries, LPDIFILEEFFECT rgDiFileEft, DWORD dwFlags);
+		HRESULT __stdcall WriteEffectToFile(LPCSTR lpszFileName, DWORD dwEntries, LPDIFILEEFFECT rgDiFileEft, DWORD dwFlags);
 
 	private:
 

@@ -24,7 +24,7 @@ namespace Hooks
 	template<typename T>
 	const MH_STATUS Create(const std::wstring& Module, const std::string& Name, void* Detour, T** Original, void** Target, bool Enable)
 	{
-		LoadLibrary(Module.c_str());
+		LoadLibraryW(Module.c_str());
 
 		if (Enable == true)
 		{

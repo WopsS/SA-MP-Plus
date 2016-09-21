@@ -19,7 +19,7 @@ const MH_STATUS Hooks::Remove(LPVOID Target)
 const MH_STATUS Hooks::Remove(const std::wstring& Module, const std::string& Name)
 {
 	LPVOID Target = nullptr;
-	auto ModuleHandle = GetModuleHandle(Module.c_str());
+	auto ModuleHandle = GetModuleHandleW(Module.c_str());
 
 	if (ModuleHandle != nullptr)
 	{
