@@ -5,23 +5,23 @@ const std::string SharedLib::Log::LevelToString(const Level Level)
 {
 	switch (Level)
 	{
-		case Level::Verbose:
+		case SharedLib::Log::Level::Verbose:
 		{
 			return "VERBOSE";
 		}
-		case Level::Debug:
+		case SharedLib::Log::Level::Debug:
 		{
 			return "DEBUG";
 		}
-		case Level::Info:
+		case SharedLib::Log::Level::Info:
 		{
 			return "INFO";
 		}
-		case Level::Warning:
+		case SharedLib::Log::Level::Warning:
 		{
 			return "WARNING";
 		}
-		case Level::Error:
+		case SharedLib::Log::Level::Error:
 		{
 			return "ERROR";
 		}
