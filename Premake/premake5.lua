@@ -47,7 +47,7 @@ workspace ("SA-MP+")
         defines { "LINUX" }
 
     filter { "action:vs*" }
-        defines { "WIN32" }
+        defines { "_CRT_SECURE_NO_WARNINGS", "WIN32" }
 
     filter { "configurations:Debug" }
         defines { "DEBUG" }

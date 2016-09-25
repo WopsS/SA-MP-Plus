@@ -1,6 +1,6 @@
 #pragma once
 
 #include <SharedLib.hpp>
-#include <Version.hpp>
 
+#include <Network/Network.hpp>
 #include <sampgdk/sampgdk.hpp>

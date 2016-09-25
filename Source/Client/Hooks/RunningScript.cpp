@@ -5,6 +5,7 @@ Hooks::RunningScript::Private::Process::Real_t Hooks::RunningScript::Private::Pr
 
 void __fastcall Hooks::RunningScript::Private::Process::Run(void** ecx)
 {
+	Network::GetInstance()->Process();
 	Hooks::RunningScript::Private::Process::Real(ecx);
 }
 
