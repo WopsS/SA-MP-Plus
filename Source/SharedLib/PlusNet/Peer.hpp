@@ -24,8 +24,8 @@ namespace SharedLib
 
 	protected:
 
-		template<typename Class, typename Function>
-		void RegisterMessageFunction(const DefaultMessageIDTypes Id, Class Class, Function Function)
+		template<typename TClass, typename TFunction>
+		void RegisterMessageFunction(const DefaultMessageIDTypes Id, TClass Class, TFunction Function)
 		{
 			if (m_messageFunction.find(Id) == m_messageFunction.end())
 			{
@@ -37,8 +37,8 @@ namespace SharedLib
 			}
 		}
 
-		template<typename Class, typename Function>
-		void RegisterRPCFunction(const RPCIds Id, Class Class, Function Function)
+		template<typename TClass, typename TFunction>
+		void RegisterRPCFunction(const RPCIds Id, TClass Class, TFunction Function)
 		{
 			if (m_rpcFunction.find(Id) == m_rpcFunction.end())
 			{
