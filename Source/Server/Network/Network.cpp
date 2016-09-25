@@ -23,7 +23,8 @@ const bool Network::Startup()
 	auto Settings = SharedLib::Settings::GetInstance();
 
 	auto Bind = Settings->Get<std::string>("bind");
-	auto StartupResult = m_rakPeer->Startup(Settings->Get<uint32_t>("maxplayers"), &RakNet::SocketDescriptor(Settings->Get<uint32_t>("plusport"), Bind.length() > 0 ? Bind.c_str() : nullptr), 1);
+	auto SocketDescriptor = RakNet::SocketDescriptor(Settings->Get<uint32_t>("plusport"), Bind.length() > 0 ? Bind.c_str() : nullptr);
+	auto StartupResult = m_rakPeer->Startup(Settings->Get<uint32_t>("maxplayers"), &SocketDescriptor, 1);
 
 	if (StartupResult != RakNet::StartupResult::RAKNET_STARTED)
 	{
