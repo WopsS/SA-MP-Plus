@@ -1,18 +1,15 @@
 #pragma once
 
-namespace SharedLib
+namespace Log
 {
-	namespace Log
+	enum class Level : uint8_t
 	{
-		enum class Level : uint8_t
-		{
-			Verbose = 0,
-			Debug,
-			Info,
-			Warning,
-			Error
-		};
+		Verbose = 0,
+		Debug,
+		Info,
+		Warning,
+		Error
+	};
 
-		const std::string LevelToString(const Level Level);
-	}
+	const std::string LevelToString(const Level Level);
 }

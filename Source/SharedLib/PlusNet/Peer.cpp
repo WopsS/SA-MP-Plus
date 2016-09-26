@@ -1,7 +1,7 @@
 #include <SharedLib.hpp>
 #include <PlusNet/Peer.hpp>
 
-SharedLib::Peer::Peer()
+Peer::Peer()
 	: m_running(false)
 	, m_rakPeer(RakNet::RakPeerInterface::GetInstance())
 {
@@ -10,13 +10,13 @@ SharedLib::Peer::Peer()
 	// TODO: Secure the network traffic.
 }
 
-SharedLib::Peer::~Peer()
+Peer::~Peer()
 {
 	m_rakPeer->Shutdown(500);
 	RakNet::RakPeerInterface::DestroyInstance(m_rakPeer);
 }
 
-void SharedLib::Peer::Process()
+void Peer::Process()
 {
 	RakNet::Packet* RakPacket = nullptr;
 
@@ -75,7 +75,7 @@ void SharedLib::Peer::Process()
 	}
 }
 
-void SharedLib::Peer::Send(const RPCIds Id, const packet_t Packet, const PacketReliability Reliability, const RakNet::AddressOrGUID& SystemIdentifier, const bool Broadcast, const int8_t OrderingChannel, const PacketPriority Priority)
+void Peer::Send(const RPCIds Id, const packet_t Packet, const PacketReliability Reliability, const RakNet::AddressOrGUID& SystemIdentifier, const bool Broadcast, const int8_t OrderingChannel, const PacketPriority Priority)
 {
 	RakNet::BitStream BitStream;
 

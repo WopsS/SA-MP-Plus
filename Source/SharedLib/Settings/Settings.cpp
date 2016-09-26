@@ -1,12 +1,12 @@
 #include <SharedLib.hpp>
 #include <Singleton/Singleton.hpp>
 
-SharedLib::Settings::Settings()
+Settings::Settings()
 {
 	Add("logtimeformat", "[%H:%M:%S]");
 }
 
-void SharedLib::Settings::Add(const std::string& Key, const std::string& Value)
+void Settings::Add(const std::string& Key, const std::string& Value)
 {
 	// If the setting's key doesn't exists add it with the value, otherwise replace the value.
 	if (m_settings.find(Key) == m_settings.end())
@@ -29,12 +29,12 @@ void SharedLib::Settings::Add(const std::string& Key, const std::string& Value)
 	}
 }
 
-const bool SharedLib::Settings::Exists(const std::string& Key) const
+const bool Settings::Exists(const std::string& Key) const
 {
 	return m_settings.find(Key) != m_settings.end();
 }
 
-void SharedLib::Settings::Process(const std::string& Text, const char& Delimiter, const std::vector<std::string>& Excludes)
+void Settings::Process(const std::string& Text, const char& Delimiter, const std::vector<std::string>& Excludes)
 {
 	// Ignore the line if we don't have the specified separator in it.
 	if (Text.find(Delimiter) != std::string::npos)
@@ -61,7 +61,7 @@ void SharedLib::Settings::Process(const std::string& Text, const char& Delimiter
 	}
 }
 
-void SharedLib::Settings::Read(const std::string& Path, const char& Delimiter, const std::vector<std::string>& Excludes)
+void Settings::Read(const std::string& Path, const char& Delimiter, const std::vector<std::string>& Excludes)
 {
 	std::fstream File(Path.c_str(), std::ios::in);
 	std::string Line;

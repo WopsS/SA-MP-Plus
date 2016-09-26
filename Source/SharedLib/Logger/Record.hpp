@@ -2,37 +2,34 @@
 
 #include <Logger/Level.hpp>
 
-namespace SharedLib
+namespace Log
 {
-	namespace Log
+	class Record
 	{
-		class Record
+	public:
+
+		Record(const Level Level);
+		~Record() = default;
+
+		const std::string Get(const bool IsCout) const;
+
+		Record& operator<<(std::ostream& (*rhs)(std::ostream&));
+
+		template<typename T>
+		Record& operator<<(const T& rhs)
 		{
-		public:
+			m_stream << rhs;
+			return *this;
+		}
 
-			Record(const Level Level);
-			~Record() = default;
+	private:
 
-			const std::string Get(const bool IsCout) const;
+		Level m_level;
 
-			Record& operator<<(std::ostream& (*rhs)(std::ostream&));
+		std::string m_time;
 
-			template<typename T>
-			Record& operator<<(const T& rhs)
-			{
-				m_stream << rhs;
-				return *this;
-			}
+		std::ostringstream m_stream;
 
-		private:
-
-			Level m_level;
-
-			std::string m_time;
-
-			std::ostringstream m_stream;
-
-			bool m_functionAppended;
-		};
-	}
+		bool m_functionAppended;
+	};
 }

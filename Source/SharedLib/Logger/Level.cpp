@@ -1,27 +1,27 @@
 #include <SharedLib.hpp>
 #include <Logger/Level.hpp>
 
-const std::string SharedLib::Log::LevelToString(const Level Level)
+const std::string Log::LevelToString(const Level Level)
 {
 	switch (Level)
 	{
-		case SharedLib::Log::Level::Verbose:
+		case Log::Level::Verbose:
 		{
 			return "VERBOSE";
 		}
-		case SharedLib::Log::Level::Debug:
+		case Log::Level::Debug:
 		{
 			return "DEBUG";
 		}
-		case SharedLib::Log::Level::Info:
+		case Log::Level::Info:
 		{
 			return "INFO";
 		}
-		case SharedLib::Log::Level::Warning:
+		case Log::Level::Warning:
 		{
 			return "WARNING";
 		}
-		case SharedLib::Log::Level::Error:
+		case Log::Level::Error:
 		{
 			return "ERROR";
 		}

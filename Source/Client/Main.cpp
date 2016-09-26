@@ -15,17 +15,17 @@ BOOL APIENTRY DllMain(HMODULE Module, DWORD Reason, LPVOID Reserved)
 			// Remove "gta_sa.exe" path from name, the quoute marks and space before the first parameter.
 			GetModuleFileName(GetModuleHandle("gta_sa.exe"), ExePath, _countof(ExePath));
 
-			auto Settings = SharedLib::String::Split(std::string(GetCommandLine() + strlen(ExePath) + 3), '-');
+			auto Settings = String::Split(std::string(GetCommandLine() + strlen(ExePath) + 3), '-');
 
 			// Add default values.
-			SharedLib::Settings::GetInstance()->Add("pp", "8777");
+			Settings::GetInstance()->Add("pp", "8777");
 
 			// Process all settings from command line, overwrite our default values if needed.
 			for (auto& i : Settings)
 			{
 				if (i.length() > 0)
 				{
-					SharedLib::Settings::GetInstance()->Process(i, ' ');
+					Settings::GetInstance()->Process(i, ' ');
 				}
 			}
 
@@ -33,7 +33,7 @@ BOOL APIENTRY DllMain(HMODULE Module, DWORD Reason, LPVOID Reserved)
 			//		- "-c" - starts the multiplayer game.
 			//		- "-d" - starts the game in debug mode.
 			// If we have "-c" argument in command line we do our things.
-			if (SharedLib::Settings::GetInstance()->Exists("c") == true)
+			if (Settings::GetInstance()->Exists("c") == true)
 			{
 				// Get path to "Documents" and set it to our logger.
 				HRESULT Result = SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, DocumentsPath);
@@ -41,7 +41,7 @@ BOOL APIENTRY DllMain(HMODULE Module, DWORD Reason, LPVOID Reserved)
 				// Set the log file path to "Documents\GTA San Andreas User Files" after we got "Documents" path with success.
 				if (SUCCEEDED(Result))
 				{
-					SharedLib::Logger::GetInstance(std::string(DocumentsPath) + "\\GTA San Andreas User Files\\samp_plus.log", false);
+					Logger::GetInstance(std::string(DocumentsPath) + "\\GTA San Andreas User Files\\samp_plus.log", false);
 				}
 
 				Hooks::Initialize();
@@ -59,7 +59,7 @@ BOOL APIENTRY DllMain(HMODULE Module, DWORD Reason, LPVOID Reserved)
 		}
 		case DLL_PROCESS_DETACH:
 		{
-			if (SharedLib::Settings::GetInstance()->Exists("c") == true)
+			if (Settings::GetInstance()->Exists("c") == true)
 			{
 				// Unhooks SA things.
 				Hooks::Game::HUD::Remove();
@@ -72,8 +72,8 @@ BOOL APIENTRY DllMain(HMODULE Module, DWORD Reason, LPVOID Reserved)
 				Hooks::Uninitialize();
 
 				// Release our stuffs since we unhooked everything.
-				SharedLib::Logger::Release();
-				SharedLib::Settings::Release();
+				Logger::Release();
+				Settings::Release();
 			}
 
 			break;

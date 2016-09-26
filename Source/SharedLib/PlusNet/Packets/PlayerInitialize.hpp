@@ -1,23 +1,20 @@
 #pragma once
 
-namespace SharedLib
+namespace Packets
 {
-	namespace Packets
+	class PlayerInitialize : public Packet
 	{
-		class PlayerInitialize : public Packet
-		{
-		public:
+	public:
 
-			PlayerInitialize() = default;
-			PlayerInitialize(const std::string& Name);
+		PlayerInitialize() = default;
+		PlayerInitialize(const std::string& Name);
 
-			~PlayerInitialize() = default;
+		~PlayerInitialize() = default;
 
-			void Deserialize(RakNet::BitStream& BitStream);
+		void Deserialize(RakNet::BitStream& BitStream);
 
-			void Serialize(RakNet::BitStream& BitStream);
+		void Serialize(RakNet::BitStream& BitStream);
 
-			std::string Name;
-		};
-	}
+		std::string Name;
+	};
 }

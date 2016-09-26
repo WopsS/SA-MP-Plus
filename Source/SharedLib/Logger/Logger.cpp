@@ -1,7 +1,7 @@
 #include <SharedLib.hpp>
 #include <Logger/Logger.hpp>
 
-SharedLib::Logger::Logger(const std::string& Path, const bool IsServer)
+Logger::Logger(const std::string& Path, const bool IsServer)
 	: m_shouldCout(false)
 	, m_isServer(IsServer)
 {
@@ -20,12 +20,12 @@ SharedLib::Logger::Logger(const std::string& Path, const bool IsServer)
 	m_shouldCout = true;
 }
 
-SharedLib::Logger::~Logger()
+Logger::~Logger()
 {
 	m_file.close();
 }
 
-void SharedLib::Logger::operator+=(Log::Record& rhs)
+void Logger::operator+=(Log::Record& rhs)
 {
 	m_file << rhs.Get(false) << std::endl;
 	m_file.flush();

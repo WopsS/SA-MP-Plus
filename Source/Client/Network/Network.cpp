@@ -14,6 +14,8 @@ Network::Network()
 	RegisterMessageFunction(ID_CONNECTION_LOST, this, &Network::OnConnectionLost);
 	RegisterMessageFunction(ID_CONNECTION_BANNED, this, &Network::OnConnectionBanned);
 	RegisterMessageFunction(ID_INVALID_PASSWORD, this, &Network::OnInvalidPassword);
+
+
 }
 
 Network::~Network()
@@ -26,7 +28,7 @@ const RakNet::ConnectionAttemptResult Network::Connect()
 	Disconnect();
 
 	// TODO: Wait 3 seconds before another reconnect attempt.
-	auto Settings = SharedLib::Settings::GetInstance();
+	auto Settings = Settings::GetInstance();
 	auto Host = Settings->Get<std::string>("h");
 	auto Port = Settings->Get<uint16_t>("pp");
 	auto Password = Settings->Get<std::string>("z");
@@ -63,7 +65,7 @@ void Network::Process()
 		Connect();
 	}
 
-	SharedLib::Peer::Process();
+	Peer::Process();
 }
 
 void Network::OnAlreadyConnected(const rakpacket_t Packet)
@@ -79,7 +81,7 @@ void Network::OnConnectionAccepted(const rakpacket_t Packet)
 	LOG_INFO << "[connection] Connected to " << Packet->SystemAddress.ToString(true, ':') << ".";
 
 	// Send the name to the server.
-	Send(RPCIds::Player_Initialize, SharedLib::Packet::Create<SharedLib::Packets::PlayerInitialize>(SharedLib::Settings::GetInstance()->Get<std::string>("n")), PacketReliability::RELIABLE_ORDERED, Packet->SystemAddress);
+	Send(RPCIds::Player_Initialize, Packet::Create<Packets::PlayerInitialize>(Settings::GetInstance()->Get<std::string>("n")), PacketReliability::RELIABLE_ORDERED, Packet->SystemAddress);
 }
 
 void Network::OnConnectionBanned(const rakpacket_t Packet)

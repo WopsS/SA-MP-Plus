@@ -14,13 +14,13 @@ void Network::Process()
 {
 	if (m_running == true)
 	{
-		SharedLib::Peer::Process();
+		Peer::Process();
 	}
 }
 
 const bool Network::Startup()
 {
-	auto Settings = SharedLib::Settings::GetInstance();
+	auto Settings = Settings::GetInstance();
 
 	auto Bind = Settings->Get<std::string>("bind");
 	auto SocketDescriptor = RakNet::SocketDescriptor(Settings->Get<uint32_t>("plusport"), Bind.length() > 0 ? Bind.c_str() : nullptr);
@@ -47,7 +47,7 @@ const bool Network::Startup()
 
 void Network::OnConnected(const packet_t PlusPacket)
 {
-	auto Packet = CONVERT_PACKET(PlusPacket, SharedLib::Packets::PlayerInitialize);
+	auto Packet = CONVERT_PACKET(PlusPacket, Packets::PlayerInitialize);
 
 	LOG_INFO << "[connection] " << Packet->Name << " has joined the server (" << Packet->SystemAddress.ToString(true, ':') << ").";
 }

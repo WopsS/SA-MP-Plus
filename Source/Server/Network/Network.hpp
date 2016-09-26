@@ -1,6 +1,6 @@
 #pragma once
 
-class Network : public SharedLib::Singleton<Network>, public SharedLib::Peer
+class Network : public Singleton<Network>, public Peer
 {
 public:
 
@@ -10,7 +10,7 @@ public:
 
 private:
 
-	friend class SharedLib::Singleton<Network>;
+	friend class Singleton<Network>;
 
 	Network();
 	~Network() = default;
