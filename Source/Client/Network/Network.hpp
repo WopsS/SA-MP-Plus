@@ -29,6 +29,8 @@ private:
 
 	void OnConnectionLost(const rakpacket_t Packet);
 
+	void OnDisconnectionNotification(const rakpacket_t Packet);
+
 	void OnInvalidPassword(const rakpacket_t Packet);
 
 	void OnServerFull(const rakpacket_t Packet);

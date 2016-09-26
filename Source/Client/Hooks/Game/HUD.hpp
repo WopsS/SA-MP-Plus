@@ -4,7 +4,7 @@ namespace Hooks
 {
 	namespace Game
 	{
-		namespace Graphics
+		namespace HUD
 		{
 			namespace Private
 			{

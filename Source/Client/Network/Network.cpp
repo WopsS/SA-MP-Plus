@@ -10,7 +10,7 @@ Network::Network()
 	RegisterMessageFunction(ID_CONNECTION_ATTEMPT_FAILED, this, &Network::OnConnectionFailed);
 	RegisterMessageFunction(ID_ALREADY_CONNECTED, this, &Network::OnAlreadyConnected);
 	RegisterMessageFunction(ID_NO_FREE_INCOMING_CONNECTIONS, this, &Network::OnServerFull);
-	RegisterMessageFunction(ID_DISCONNECTION_NOTIFICATION, this, &Network::OnConnectionLost);
+	RegisterMessageFunction(ID_DISCONNECTION_NOTIFICATION, this, &Network::OnDisconnectionNotification);
 	RegisterMessageFunction(ID_CONNECTION_LOST, this, &Network::OnConnectionLost);
 	RegisterMessageFunction(ID_CONNECTION_BANNED, this, &Network::OnConnectionBanned);
 	RegisterMessageFunction(ID_INVALID_PASSWORD, this, &Network::OnInvalidPassword);
@@ -33,7 +33,6 @@ const RakNet::ConnectionAttemptResult Network::Connect()
 
 	LOG_INFO << "[connection] Connecting to " << Host << ":" << Port << "...";
 
-	// TODO: Sync interval between attempted connection with SA-MP. Try to hook something about world, maybe "World::Create", if exists.
 	return m_rakPeer->Connect(Host.c_str(), Settings->Get<uint16_t>("pp"), Password.length() > 0 ? Password.c_str() : nullptr, Settings->GetLength<size_t>("z"), nullptr, 0, 10, 500, 3000);
 }
 
@@ -102,6 +101,15 @@ void Network::OnConnectionLost(const rakpacket_t Packet)
 	m_running = false;
 
 	LOG_INFO << "[connection] Connection to the server has been lost. Reconnecting...";
+}
+
+void Network::OnDisconnectionNotification(const rakpacket_t Packet)
+{
+	// The server notify us about "exit" command so we will disconnect from the server and don't reconnect again.
+	Disconnect();
+	m_connecting = true;
+
+	LOG_INFO << "[connection] Connection to the server was closed.";
 }
 
 void Network::OnInvalidPassword(const rakpacket_t Packet)

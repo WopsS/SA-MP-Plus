@@ -1,7 +1,7 @@
 #include <stdafx.hpp>
 #include <Hooks/DirectInput/DirectInput.hpp>
 #include <Hooks/DirectX/DirectX.hpp>
-#include <Hooks/Game/Graphics.hpp>
+#include <Hooks/Game/HUD.hpp>
 #include <Hooks/Kernel32/Kernel32.hpp>
 
 BOOL APIENTRY DllMain(HMODULE Module, DWORD Reason, LPVOID Reserved)
@@ -52,7 +52,7 @@ BOOL APIENTRY DllMain(HMODULE Module, DWORD Reason, LPVOID Reserved)
 				Hooks::Kernel32::Create();
 
 				// Hooks SA things.
-				Hooks::Game::Graphics::Create();
+				Hooks::Game::HUD::Create();
 			}
 
 			break;
@@ -62,7 +62,7 @@ BOOL APIENTRY DllMain(HMODULE Module, DWORD Reason, LPVOID Reserved)
 			if (SharedLib::Settings::GetInstance()->Exists("c") == true)
 			{
 				// Unhooks SA things.
-				Hooks::Game::Graphics::Remove();
+				Hooks::Game::HUD::Remove();
 
 				// Unhook things for external libraries.
 				Hooks::Kernel32::Remove();

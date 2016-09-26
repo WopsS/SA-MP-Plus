@@ -21,5 +21,3 @@
 #include <PlusNet/Peer.hpp>
 #include <Utils/String.hpp>
 #include <Settings/Settings.hpp>
-
-// TODO: Create a new type for char / wchar and std::string / std::wstring.
