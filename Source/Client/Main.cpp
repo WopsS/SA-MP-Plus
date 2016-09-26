@@ -1,7 +1,8 @@
 #include <stdafx.hpp>
-#include <Hooks/DirectInput.hpp>
-#include <Hooks/DirectX.hpp>
-#include <Hooks/RunningScript.hpp>
+#include <Hooks/DirectInput/DirectInput.hpp>
+#include <Hooks/DirectX/DirectX.hpp>
+#include <Hooks/Game/Graphics.hpp>
+#include <Hooks/Kernel32/Kernel32.hpp>
 
 BOOL APIENTRY DllMain(HMODULE Module, DWORD Reason, LPVOID Reserved)
 {
@@ -28,33 +29,52 @@ BOOL APIENTRY DllMain(HMODULE Module, DWORD Reason, LPVOID Reserved)
 				}
 			}
 
-			// Get path to "Documents" and set it to our logger.
-			HRESULT Result = SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, DocumentsPath);
-
-			if (SUCCEEDED(Result))
+			// Command lines from SA-MP:
+			//		- "-c" - starts the multiplayer game.
+			//		- "-d" - starts the game in debug mode.
+			// If we have "-c" argument in command line we do our things.
+			if (SharedLib::Settings::GetInstance()->Exists("c") == true)
 			{
-				SharedLib::Logger::GetInstance(std::string(DocumentsPath) + "\\GTA San Andreas User Files\\samp_plus.log", false);
+				// Get path to "Documents" and set it to our logger.
+				HRESULT Result = SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, DocumentsPath);
+
+				// Set the log file path to "Documents\GTA San Andreas User Files" after we got "Documents" path with success.
+				if (SUCCEEDED(Result))
+				{
+					SharedLib::Logger::GetInstance(std::string(DocumentsPath) + "\\GTA San Andreas User Files\\samp_plus.log", false);
+				}
+
+				Hooks::Initialize();
+
+				// Hook things for external libraries first.
+				Hooks::DirectInput::Create();
+				Hooks::DirectX::Create();
+				Hooks::Kernel32::Create();
+
+				// Hooks SA things.
+				Hooks::Game::Graphics::Create();
 			}
-
-			// Hooks SA things.
-			Hooks::Initialize();
-
-			Hooks::DirectInput::Create();
-			Hooks::DirectX::Create();
-			Hooks::RunningScript::Create();
 
 			break;
 		}
 		case DLL_PROCESS_DETACH:
 		{
-			Hooks::RunningScript::Remove();
-			Hooks::DirectX::Remove();
-			Hooks::DirectInput::Remove();
+			if (SharedLib::Settings::GetInstance()->Exists("c") == true)
+			{
+				// Unhooks SA things.
+				Hooks::Game::Graphics::Remove();
 
-			Hooks::Uninitialize();
+				// Unhook things for external libraries.
+				Hooks::Kernel32::Remove();
+				Hooks::DirectX::Remove();
+				Hooks::DirectInput::Remove();
 
-			SharedLib::Logger::Release();
-			SharedLib::Settings::Release();
+				Hooks::Uninitialize();
+
+				// Release our stuffs since we unhooked everything.
+				SharedLib::Logger::Release();
+				SharedLib::Settings::Release();
+			}
 
 			break;
 		}

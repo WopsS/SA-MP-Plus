@@ -1,8 +1,8 @@
 #include <stdafx.hpp>
-#include <Hooks/DirectX.hpp>
+#include <Hooks/DirectX/DirectX.hpp>
 #include <Proxies/DirectX/Direct3D9.hpp>
 
-Hooks::DirectX::Private::Direct3DCreate9_t Hooks::DirectX::Private::Real;
+Hooks::DirectX::Private::real_t Hooks::DirectX::Private::Real;
 
 IDirect3D9* WINAPI Hooks::DirectX::Private::Direct3DCreate9(UINT SDKVersion)
 {

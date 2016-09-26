@@ -8,6 +8,8 @@ namespace SharedLib
 
 		void Add(const std::string& Key, const std::string& Value);
 
+		const bool Exists(const std::string& Key) const;
+
 		template<typename T>
 		T Get(const std::string& Key) const
 		{		

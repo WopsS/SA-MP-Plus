@@ -6,8 +6,8 @@ namespace Hooks
 	{
 		namespace Private
 		{
-			typedef IDirect3D9*(WINAPI* Direct3DCreate9_t)(UINT);
-			extern Direct3DCreate9_t Real;
+			using real_t = IDirect3D9*(WINAPI*)(UINT);
+			extern real_t Real;
 
 			IDirect3D9* WINAPI Direct3DCreate9(UINT SDKVersion);
 		}

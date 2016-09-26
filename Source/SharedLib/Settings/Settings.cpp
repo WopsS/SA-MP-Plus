@@ -29,6 +29,11 @@ void SharedLib::Settings::Add(const std::string& Key, const std::string& Value)
 	}
 }
 
+const bool SharedLib::Settings::Exists(const std::string& Key) const
+{
+	return m_settings.find(Key) != m_settings.end();
+}
+
 void SharedLib::Settings::Process(const std::string& Text, const char& Delimiter, const std::vector<std::string>& Excludes)
 {
 	// Ignore the line if we don't have the specified separator in it.

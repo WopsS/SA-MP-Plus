@@ -18,20 +18,20 @@ Network::Network()
 
 Network::~Network()
 {
-	// TODO: Hook something to release "Network" instance.
 	Disconnect();
 }
 
 const RakNet::ConnectionAttemptResult Network::Connect()
 {
 	Disconnect();
-	
+
+	// TODO: Wait 3 seconds before another reconnect attempt.
 	auto Settings = SharedLib::Settings::GetInstance();
 	auto Host = Settings->Get<std::string>("h");
 	auto Port = Settings->Get<uint16_t>("pp");
 	auto Password = Settings->Get<std::string>("z");
 
-	LOG_INFO << "Connecting to " << Host << ":" << Port << "...";
+	LOG_INFO << "[connection] Connecting to " << Host << ":" << Port << "...";
 
 	// TODO: Sync interval between attempted connection with SA-MP. Try to hook something about world, maybe "World::Create", if exists.
 	return m_rakPeer->Connect(Host.c_str(), Settings->Get<uint16_t>("pp"), Password.length() > 0 ? Password.c_str() : nullptr, Settings->GetLength<size_t>("z"), nullptr, 0, 10, 500, 3000);
@@ -69,7 +69,7 @@ void Network::Process()
 
 void Network::OnAlreadyConnected(const rakpacket_t Packet)
 {
-	LOG_INFO << "You are already connected to " << Packet->SystemAddress.ToString(true, ':') << ".";
+	LOG_INFO << "[connection] You are already connected to " << Packet->SystemAddress.ToString(true, ':') << ".";
 }
 
 void Network::OnConnectionAccepted(const rakpacket_t Packet)
@@ -77,7 +77,7 @@ void Network::OnConnectionAccepted(const rakpacket_t Packet)
 	m_connecting = false;
 	m_running = true;
 
-	LOG_INFO << "Connected to " << Packet->SystemAddress.ToString(true, ':') << ".";
+	LOG_INFO << "[connection] Connected to " << Packet->SystemAddress.ToString(true, ':') << ".";
 
 	// Send the name to the server.
 	Send(RPCIds::Player_Initialize, SharedLib::Packet::Create<SharedLib::Packets::PlayerInitialize>(SharedLib::Settings::GetInstance()->Get<std::string>("n")), PacketReliability::RELIABLE_ORDERED, Packet->SystemAddress);
@@ -85,14 +85,14 @@ void Network::OnConnectionAccepted(const rakpacket_t Packet)
 
 void Network::OnConnectionBanned(const rakpacket_t Packet)
 {
-	LOG_INFO << "You are banned from the server.";
+	LOG_INFO << "[connection] You are banned from the server.";
 }
 
 void Network::OnConnectionFailed(const rakpacket_t Packet)
 {
 	m_connecting = false;
 
-	LOG_INFO << "Server is not responding. Reconnecting...";
+	LOG_INFO << "[connection] Server is not responding. Reconnecting...";
 
 	// TODO: Set a maximum number of retries before concluding that the server isn't using our plugin.
 }
@@ -101,15 +101,15 @@ void Network::OnConnectionLost(const rakpacket_t Packet)
 {
 	m_running = false;
 
-	LOG_INFO << "Connection to the server has been lost. Reconnecting...";
+	LOG_INFO << "[connection] Connection to the server has been lost. Reconnecting...";
 }
 
 void Network::OnInvalidPassword(const rakpacket_t Packet)
 {
-	LOG_INFO << "Invalid server password.";
+	LOG_INFO << "[connection] Invalid server password.";
 }
 
 void Network::OnServerFull(const rakpacket_t Packet)
 {
-	LOG_INFO << "Server is full.";
+	LOG_INFO << "[connection] Server is full.";
 }

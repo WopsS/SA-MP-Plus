@@ -1,8 +1,8 @@
 #include <stdafx.hpp>
-#include <Hooks/DirectInput.hpp>
+#include <Hooks/DirectInput/DirectInput.hpp>
 #include <Proxies/DirectInput/DirectInput8.hpp>
 
-Hooks::DirectInput::Private::DirectInput8Create_t Hooks::DirectInput::Private::Real;
+Hooks::DirectInput::Private::real_t Hooks::DirectInput::Private::Real;
 
 HRESULT WINAPI Hooks::DirectInput::Private::DirectInput8Create(HINSTANCE hinst, DWORD dwVersion, REFIID riidltf, LPVOID* ppvOut, LPUNKNOWN punkOuter)
 {
