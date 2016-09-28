@@ -20,4 +20,6 @@ private:
 	void OnConnectionLost(const rakpacket_t Packet);
 
 	void OnIncomingConnection(const rakpacket_t Packet);
+
+	bool m_running;
 };

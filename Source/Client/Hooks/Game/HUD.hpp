@@ -8,10 +8,10 @@ namespace Hooks
 		{
 			namespace Private
 			{
-				using real_t = int(WINAPIV*)();
+				using real_t = void(WINAPIV*)();
 				extern real_t Real;
 
-				int WINAPIV Run();
+				void WINAPIV Run();
 			}
 
 			void Create();

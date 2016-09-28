@@ -16,6 +16,11 @@ public:
 		return m_instance;
 	}
 
+	static const bool IsReleased()
+	{
+		return m_instance == nullptr;
+	}
+
 	static bool Release()
 	{
 		if (m_instance != nullptr)

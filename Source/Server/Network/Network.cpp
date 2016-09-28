@@ -2,6 +2,7 @@
 #include <Network/Network.hpp>
 
 Network::Network()
+	: m_running(false)
 {
 	RegisterMessageFunction(ID_NEW_INCOMING_CONNECTION, this, &Network::OnIncomingConnection);
 	RegisterMessageFunction(ID_DISCONNECTION_NOTIFICATION, this, &Network::OnConnectionLost);
@@ -47,6 +48,8 @@ const bool Network::Startup()
 
 void Network::OnConnected(const packet_t PlusPacket)
 {
+	// TODO: Check for a valid name (a-z, A-Z, 0-9).
+
 	auto Packet = CONVERT_PACKET(PlusPacket, Packets::PlayerInitialize);
 
 	LOG_INFO << "[connection] " << Packet->Name << " has joined the server (" << Packet->SystemAddress.ToString(true, ':') << ").";

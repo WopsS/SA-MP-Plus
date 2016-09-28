@@ -2,8 +2,7 @@
 #include <PlusNet/Peer.hpp>
 
 Peer::Peer()
-	: m_running(false)
-	, m_rakPeer(RakNet::RakPeerInterface::GetInstance())
+	: m_rakPeer(RakNet::RakPeerInterface::GetInstance())
 {
 	static_assert(sizeof(RPCIds) == sizeof(uint8_t), "Size of RPCTypes is not equal with uint8_t");
 
@@ -54,7 +53,7 @@ void Peer::Process()
 			}
 			else
 			{
-				LOG_INFO << "[RPC] Unhandled RPC (id=" << static_cast<uint32_t>(RPCId) << ") with " << RakPacket->length << " bytes.";
+				LOG_WARNING << "[RPC] Unhandled RPC (id=" << static_cast<uint32_t>(RPCId) << ") with " << RakPacket->length << " bytes.";
 			}
 		}
 		else
@@ -67,7 +66,7 @@ void Peer::Process()
 			}
 			else
 			{
-				LOG_INFO << "[packet] Unhandled packet (id=" << static_cast<uint32_t>(Type) << ") with " << RakPacket->length << " bytes.";
+				LOG_WARNING << "[packet] Unhandled packet (id=" << static_cast<uint32_t>(Type) << ") with " << RakPacket->length << " bytes.";
 			}
 		}
 

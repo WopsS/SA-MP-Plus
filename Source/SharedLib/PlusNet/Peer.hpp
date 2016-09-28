@@ -48,8 +48,6 @@ protected:
 		}
 	}
 
-	bool m_running;
-
 	RakNet::RakPeerInterface* m_rakPeer;
 
 private:

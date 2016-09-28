@@ -1,5 +1,13 @@
 #pragma once
 
+enum class ConnectionState : uint8_t
+{
+	Disconnected = 0,
+	Connecting,
+	Connected,
+	Error
+};
+
 class Network : public Singleton<Network>, public Peer
 {
 public:
@@ -7,6 +15,8 @@ public:
 	const RakNet::ConnectionAttemptResult Connect();
 	
 	void Disconnect();
+
+	const ConnectionState GetState() const;
 
 	const bool IsConnected() const;
 
@@ -35,5 +45,11 @@ private:
 
 	void OnServerFull(const rakpacket_t Packet);
 
-	bool m_connecting;
+	void SetState(const ConnectionState State);
+
+	ConnectionState m_connectionState;
+
+	uint8_t m_connectionRetries;
+
+	StopWatch<> m_stopWatch;
 };

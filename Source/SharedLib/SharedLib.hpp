@@ -19,5 +19,6 @@
 
 #include <Logger/Logger.hpp>
 #include <PlusNet/Peer.hpp>
+#include <StopWatch/StopWatch.hpp>
 #include <Utils/String.hpp>
 #include <Settings/Settings.hpp>

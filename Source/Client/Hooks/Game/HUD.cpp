@@ -3,10 +3,18 @@
 
 Hooks::Game::HUD::Private::real_t Hooks::Game::HUD::Private::Real;
 
-int WINAPIV Hooks::Game::HUD::Private::Run()
+void WINAPIV Hooks::Game::HUD::Private::Run()
 {
 	Network::GetInstance()->Process();
-	return Hooks::Game::HUD::Private::Real();
+
+	if (Hooks::Game::HUD::Private::Real == nullptr)
+	{
+		// Assign the original value because we will use it once more before hook ended.
+		Hooks::Game::HUD::Private::Real = (Hooks::Game::HUD::Private::real_t)0x0053E230;
+		Network::Release();
+	}
+
+	Hooks::Game::HUD::Private::Real();
 }
 
 void Hooks::Game::HUD::Create()
@@ -27,5 +35,6 @@ void Hooks::Game::HUD::Create()
 
 void Hooks::Game::HUD::Remove()
 {
+	Hooks::Game::HUD::Private::Real = nullptr;
 	Hooks::Remove((LPVOID)0x0053E230);
 }

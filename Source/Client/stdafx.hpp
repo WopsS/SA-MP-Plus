@@ -15,5 +15,6 @@
 #include <MinHook.h>
 #include <SharedLib.hpp>
 
+#include <Game/Game.hpp>
 #include <Hooks/Hooks.hpp>
 #include <Network/Network.hpp>

@@ -1,8 +1,5 @@
 #include <stdafx.hpp>
-#include <Hooks/DirectInput/DirectInput.hpp>
-#include <Hooks/DirectX/DirectX.hpp>
-#include <Hooks/Game/HUD.hpp>
-#include <Hooks/Kernel32/Kernel32.hpp>
+#include <Game/Game.hpp>
 
 BOOL APIENTRY DllMain(HMODULE Module, DWORD Reason, LPVOID Reserved)
 {
@@ -44,36 +41,16 @@ BOOL APIENTRY DllMain(HMODULE Module, DWORD Reason, LPVOID Reserved)
 					Logger::GetInstance(std::string(DocumentsPath) + "\\GTA San Andreas User Files\\samp_plus.log", false);
 				}
 
-				Hooks::Initialize();
-
-				// Hook things for external libraries first.
-				Hooks::DirectInput::Create();
-				Hooks::DirectX::Create();
-				Hooks::Kernel32::Create();
-
-				// Hooks SA things.
-				Hooks::Game::HUD::Create();
+				Game::GetInstance();
 			}
 
 			break;
 		}
 		case DLL_PROCESS_DETACH:
 		{
-			if (Settings::GetInstance()->Exists("c") == true)
+			if (Game::IsReleased() == false && Settings::GetInstance()->Exists("c") == true)
 			{
-				// Unhooks SA things.
-				Hooks::Game::HUD::Remove();
-
-				// Unhook things for external libraries.
-				Hooks::Kernel32::Remove();
-				Hooks::DirectX::Remove();
-				Hooks::DirectInput::Remove();
-
-				Hooks::Uninitialize();
-
-				// Release our stuffs since we unhooked everything.
-				Logger::Release();
-				Settings::Release();
+				Game::Release();
 			}
 
 			break;
