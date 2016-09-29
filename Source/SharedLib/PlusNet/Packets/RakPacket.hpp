@@ -6,7 +6,9 @@ namespace Packets
 	{
 	public:
 
+		RakPacket() = default;
 		RakPacket(const RakNet::SystemAddress& Address);
+
 		~RakPacket() = default;
 
 	private:

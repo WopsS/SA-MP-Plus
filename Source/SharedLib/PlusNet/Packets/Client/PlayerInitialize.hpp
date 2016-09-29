@@ -16,5 +16,7 @@ namespace Packets
 		void Serialize(RakNet::BitStream& BitStream);
 
 		std::string Name;
+
+		uint32_t Version;
 	};
 }

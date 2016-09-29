@@ -15,6 +15,8 @@ Network::Network()
 	RegisterMessageFunction(ID_CONNECTION_LOST, this, &Network::OnConnectionLost);
 	RegisterMessageFunction(ID_CONNECTION_BANNED, this, &Network::OnConnectionBanned);
 	RegisterMessageFunction(ID_INVALID_PASSWORD, this, &Network::OnInvalidPassword);
+
+	RegisterRPCFunction(RPCId::InvalidVersion, this, &Network::OnInvalidVersion);
 }
 
 Network::~Network()
@@ -104,10 +106,13 @@ void Network::OnConnectionAccepted(const rakpacket_t Packet)
 
 	LOG_INFO << "[connection] Connected to " << Packet->SystemAddress.ToString(true, ':') << ".";
 
-	// TODO: Send the version to the server.
+	auto ReturnPacket = Packet::Create<Packets::PlayerInitialize>();
+
+	ReturnPacket->Name = Settings::GetInstance()->Get<std::string>("n");
+	ReturnPacket->Version = SAMP_PLUS_PROTOCOL_VERSION;
 
 	// Send the name to the server.
-	Send(RPCIds::Player_Initialize, Packet::Create<Packets::PlayerInitialize>(Settings::GetInstance()->Get<std::string>("n")), PacketReliability::RELIABLE_ORDERED, Packet->SystemAddress);
+	Send(RPCId::PlayerInitialize, ReturnPacket, PacketReliability::RELIABLE_ORDERED, Packet->SystemAddress);
 }
 
 void Network::OnConnectionBanned(const rakpacket_t Packet)
@@ -134,8 +139,8 @@ void Network::OnConnectionFailed(const rakpacket_t Packet)
 
 void Network::OnConnectionLost(const rakpacket_t Packet)
 {
-	SetState(ConnectionState::Disconnected);
 	LOG_INFO << "[connection] Connection to the server has been lost. Reconnecting...";
+	SetState(ConnectionState::Disconnected);
 }
 
 void Network::OnDisconnectionNotification(const rakpacket_t Packet)
@@ -153,6 +158,12 @@ void Network::OnInvalidPassword(const rakpacket_t Packet)
 	SetState(ConnectionState::Error);
 }
 
+void Network::OnInvalidVersion(const packet_t Packet)
+{
+	LOG_INFO << "[connection] Invalid version, required version is " << CONVERT_PACKET(Packet, Packets::InvalidVersion)->Version << ".";
+	SetState(ConnectionState::Error);
+}
+
 void Network::OnServerFull(const rakpacket_t Packet)
 {
 	LOG_INFO << "[connection] Server is full.";
@@ -164,7 +175,7 @@ void Network::SetState(const ConnectionState State)
 	m_connectionState = State;
 
 	// If here is an error let's unhook our things.
-	if (State == ConnectionState::Error)
+	if (Game::IsReleased() == false && State == ConnectionState::Error)
 	{
 		Game::Release();
 	}

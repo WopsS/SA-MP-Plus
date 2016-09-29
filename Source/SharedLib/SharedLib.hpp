@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <chrono>
 #include <ctime>
 #include <fstream>
@@ -16,9 +17,9 @@
 
 #include <Version.hpp>
 #include <Singleton/Singleton.hpp>
-
 #include <Logger/Logger.hpp>
-#include <PlusNet/Peer.hpp>
 #include <StopWatch/StopWatch.hpp>
+
+#include <PlusNet/Peer.hpp>
 #include <Utils/String.hpp>
 #include <Settings/Settings.hpp>

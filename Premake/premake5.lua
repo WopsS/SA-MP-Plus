@@ -7,6 +7,14 @@ local version =
     0   -- Patch
 }
 
+local prereleaseVersion =
+{
+     "alpha", -- Name (alpha or beta)
+     "1" -- Number
+}
+
+local protocolVersion = 1;
+
 local config =
 {
     includes={ "../Includes/Common", "../Source/SharedLib" },
@@ -18,7 +26,7 @@ if (os.is("Windows") == true) then
     config["libs"] = table.insertflat(config["libs"], "ws2_32")
 end
 
-local function formatVersion(inputFile, outputFile)
+local function formatVersion(inputFile, outputFile, writeProtocol)
     local inFile = io.open(inputFile, "r")
 
     if not inFile then
@@ -26,15 +34,26 @@ local function formatVersion(inputFile, outputFile)
     end
 
     local outFile = io.open(outputFile, "w")
+    local versionString = table.implode(version, "", "", ".")
+    local prereleaseVersionString = ""
+    local result = inFile:read("*a")
 
-    outFile:write(string.format(inFile:read("*a"), table.implode(version, "", "", ".")))
+    if string.len(prereleaseVersion[1]) > 0 then
+        versionString = versionString .. "-" .. table.implode(prereleaseVersion, "", "", "")
+    end
+
+    if writeProtocol == false then
+        outFile:write(string.format(result, versionString))
+    else
+        outFile:write(string.format(result, versionString, protocolVersion))
+    end
 
     inFile:close()
     outFile:close()
 end
 
-formatVersion("../a_samp+.inc.in", "../Build/Server/pawno/include/a_samp+.inc")
-formatVersion("../Source/SharedLib/Version.hpp.in", "../Includes/Common/Version.hpp")
+formatVersion("../a_samp+.inc.in", "../Build/Server/pawno/include/a_samp+.inc", false)
+formatVersion("../Source/SharedLib/Version.hpp.in", "../Includes/Common/Version.hpp", true)
 
 workspace ("SA-MP+")
     architecture ("x86")

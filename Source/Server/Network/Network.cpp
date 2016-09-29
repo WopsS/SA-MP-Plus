@@ -8,7 +8,7 @@ Network::Network()
 	RegisterMessageFunction(ID_DISCONNECTION_NOTIFICATION, this, &Network::OnConnectionLost);
 	RegisterMessageFunction(ID_CONNECTION_LOST, this, &Network::OnConnectionLost);
 
-	RegisterRPCFunction(RPCIds::Player_Initialize, this, &Network::OnConnected);
+	RegisterRPCFunction(RPCId::PlayerInitialize, this, &Network::OnConnected);
 }
 
 void Network::Process()
@@ -52,7 +52,20 @@ void Network::OnConnected(const packet_t PlusPacket)
 
 	auto Packet = CONVERT_PACKET(PlusPacket, Packets::PlayerInitialize);
 
-	LOG_INFO << "[connection] " << Packet->Name << " has joined the server (" << Packet->SystemAddress.ToString(true, ':') << ").";
+	if (Packet->Version == SAMP_PLUS_PROTOCOL_VERSION)
+	{
+		LOG_INFO << "[connection] " << Packet->Name << " has joined the server (" << Packet->SystemAddress.ToString(true, ':') << ").";
+	}
+	else
+	{
+		LOG_INFO << "[connection] Player " << Packet->Name << " is using an invalid version, connection closed (" << Packet->SystemAddress.ToString(true, ':') << ").";
+
+		auto ReturnPacket = Packet::Create<Packets::InvalidVersion>();
+		ReturnPacket->Version = SAMP_PLUS_VERSION;
+
+		// Don't trust the client to close the connection.
+		SendAndClose(RPCId::InvalidVersion, ReturnPacket, PacketReliability::RELIABLE_ORDERED, Packet->SystemAddress);
+	}
 }
 
 void Network::OnConnectionLost(const rakpacket_t Packet)

@@ -1,3 +1,4 @@
 #pragma once
 
 #define SAMP_PLUS_VERSION "%s"
+#define SAMP_PLUS_PROTOCOL_VERSION %i

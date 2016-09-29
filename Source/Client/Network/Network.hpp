@@ -43,6 +43,8 @@ private:
 
 	void OnInvalidPassword(const rakpacket_t Packet);
 
+	void OnInvalidVersion(const packet_t Packet);
+
 	void OnServerFull(const rakpacket_t Packet);
 
 	void SetState(const ConnectionState State);
