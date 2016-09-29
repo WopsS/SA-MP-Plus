@@ -55,7 +55,7 @@ protected:
 
 private:
 
-	std::vector<std::pair<RakNet::AddressOrGUID, StopWatch<std::chrono::high_resolution_clock>>> m_awaitingDisconnection;
+	std::vector<std::pair<RakNet::AddressOrGUID, Stopwatch<std::chrono::high_resolution_clock>>> m_awaitingDisconnection;
 
 	std::map<DefaultMessageIDTypes, std::function<void(const rakpacket_t)>> m_messageFunction;
 

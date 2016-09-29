@@ -20,14 +20,14 @@ void Peer::Process()
 	if (m_awaitingDisconnection.empty() == false)
 	{
 		// Close all connections after 1 second.
-		m_awaitingDisconnection.erase(std::remove_if(m_awaitingDisconnection.begin(), m_awaitingDisconnection.end(), [&](std::pair<RakNet::AddressOrGUID, StopWatch<std::chrono::high_resolution_clock>>& Item)
+		m_awaitingDisconnection.erase(std::remove_if(m_awaitingDisconnection.begin(), m_awaitingDisconnection.end(), [&](std::pair<RakNet::AddressOrGUID, Stopwatch<std::chrono::high_resolution_clock>>& Item)
 		{ 
 			bool ShouldRemove = false;
-			auto& StopWatch = Item.second;
+			auto& Stopwatch = Item.second;
 
-			if (StopWatch.IsRunning() == true)
+			if (Stopwatch.IsRunning() == true)
 			{
-				if (StopWatch.Elapsed<std::chrono::seconds>() >= 1)
+				if (Stopwatch.Elapsed<std::chrono::seconds>() >= 1)
 				{
 					m_rakPeer->CloseConnection(Item.first, false);
 					ShouldRemove = true;
@@ -35,7 +35,7 @@ void Peer::Process()
 			}
 			else
 			{
-				StopWatch.Start();
+				Stopwatch.Start();
 			}
 
 			return ShouldRemove;
@@ -122,5 +122,5 @@ void Peer::Send(const RPCId Id, const packet_t Packet, const PacketReliability R
 void Peer::SendAndClose(const RPCId Id, const packet_t Packet, const PacketReliability Reliability, const RakNet::AddressOrGUID& SystemIdentifier, const bool Broadcast, const int8_t OrderingChannel, const PacketPriority Priority)
 {
 	Send(Id, Packet, Reliability, SystemIdentifier, Broadcast, OrderingChannel, Priority);
-	m_awaitingDisconnection.emplace_back(SystemIdentifier, StopWatch<std::chrono::high_resolution_clock>());
+	m_awaitingDisconnection.emplace_back(SystemIdentifier, Stopwatch<std::chrono::high_resolution_clock>());
 }

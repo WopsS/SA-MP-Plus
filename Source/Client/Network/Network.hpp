@@ -53,5 +53,5 @@ private:
 
 	uint8_t m_connectionRetries;
 
-	StopWatch<> m_stopWatch;
+	Stopwatch<> m_stopwatch;
 };

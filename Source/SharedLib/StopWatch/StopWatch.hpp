@@ -1,54 +1,55 @@
 #pragma once
 
 template<typename Clock = std::chrono::high_resolution_clock>
-class StopWatch
+class Stopwatch
 {
 public:
 
-	StopWatch()
+	Stopwatch()
 		: m_started(false)
-		, m_startClock(Clock::now())
-		, m_stopClock(Clock::now())
+		, m_start(Clock::now())
+		, m_stop(Clock::now())
 	{
 
 	}
 
-	~StopWatch() = default;
+	~Stopwatch() = default;
+
+	template<class ToDuration>
+	const auto Elapsed() const
+	{
+		if (IsRunning() == true)
+		{
+			return std::chrono::duration_cast<ToDuration>(Clock::now() - m_start).count();
+		}
+
+		return std::chrono::duration_cast<ToDuration>(m_stop - m_start).count();
+	}
 
 	const bool IsRunning() const
 	{
 		return m_started;
 	}
 
-	template<class ToDuration>
-	const auto Elapsed()
-	{
-		if (IsRunning() == true)
-		{
-			m_stopClock = Clock::now();
-		}
-
-		return std::chrono::duration_cast<ToDuration>(m_stopClock - m_startClock).count();
-	}
-
 	void Reset()
 	{
 		m_started = false;
-		m_startClock = Clock::now();
-		m_stopClock = Clock::now();
+		m_start = Clock::now();
+		m_stop = Clock::now();
 	}
 
 	void Restart()
 	{
-		m_startClock = Clock::now();
-		m_stopClock = Clock::now();
+		m_started = true;
+		m_start = Clock::now();
+		m_stop = Clock::now();
 	}
 
 	void Start()
 	{
 		if (m_started == false)
 		{
-			m_startClock = Clock::now();
+			m_start = Clock::now();
 			m_started = true;
 		}
 	}
@@ -57,7 +58,7 @@ public:
 	{
 		if (m_started == true)
 		{
-			m_stopClock = Clock::now();
+			m_stop = Clock::now();
 			m_started = false;
 		}
 	}
@@ -66,7 +67,7 @@ private:
 
 	bool m_started;
 
-	std::chrono::time_point<Clock> m_startClock;
+	std::chrono::time_point<Clock> m_start;
 
-	std::chrono::time_point<Clock> m_stopClock;
+	std::chrono::time_point<Clock> m_stop;
 };

@@ -18,7 +18,7 @@
 #include <Version.hpp>
 #include <Singleton/Singleton.hpp>
 #include <Logger/Logger.hpp>
-#include <StopWatch/StopWatch.hpp>
+#include <Stopwatch/Stopwatch.hpp>
 
 #include <PlusNet/Peer.hpp>
 #include <Utils/String.hpp>

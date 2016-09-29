@@ -72,20 +72,20 @@ void Network::Process()
 	// Try to connect if we are not connected or we aren't connecting to the server.
 	if (IsConnected() == false && GetState() != ConnectionState::Connecting)
 	{
-		if (m_stopWatch.IsRunning() == true)
+		if (m_stopwatch.IsRunning() == true)
 		{
 			// Let's connect one second later.
-			if (m_stopWatch.Elapsed<std::chrono::seconds>() >= 1)
+			if (m_stopwatch.Elapsed<std::chrono::seconds>() >= 1)
 			{
 				SetState(ConnectionState::Connecting);
 
 				Connect();
-				m_stopWatch.Restart();
+				m_stopwatch.Restart();
 			}
 		}
 		else
 		{
-			m_stopWatch.Start();
+			m_stopwatch.Start();
 		}
 	}
 
@@ -102,7 +102,7 @@ void Network::OnConnectionAccepted(const rakpacket_t Packet)
 	SetState(ConnectionState::Connected);
 	m_connectionRetries = 0;
 
-	m_stopWatch.Stop();
+	m_stopwatch.Stop();
 
 	LOG_INFO << "[connection] Connected to " << Packet->SystemAddress.ToString(true, ':') << ".";
 
