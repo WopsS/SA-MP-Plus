@@ -64,14 +64,19 @@ void Peer::Process()
 
 				switch (RPCId)
 				{
-					case ::RPCId::PlayerInitialize:
-					{
-						Packet = Packet::Create<Packets::PlayerInitialize>();
-						break;
-					}
 					case ::RPCId::InvalidVersion:
 					{
 						Packet = Packet::Create<Packets::InvalidVersion>();
+						break;
+					}
+					case ::RPCId::InvalidName:
+					{
+						Packet = Packet::Create<Packets::RakPacket>();
+						break;
+					}
+					case ::RPCId::PlayerInitialize:
+					{
+						Packet = Packet::Create<Packets::PlayerInitialize>();
 						break;
 					}
 				}

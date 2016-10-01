@@ -17,6 +17,7 @@ Network::Network()
 	RegisterMessageFunction(ID_INVALID_PASSWORD, this, &Network::OnInvalidPassword);
 
 	RegisterRPCFunction(RPCId::InvalidVersion, this, &Network::OnInvalidVersion);
+	RegisterRPCFunction(RPCId::InvalidName, this, &Network::OnInvalidName);
 }
 
 Network::~Network()
@@ -149,6 +150,12 @@ void Network::OnDisconnectionNotification(const rakpacket_t Packet)
 
 	// The server notify us about "exit" command so we will disconnect from the server and don't reconnect again.
 	Disconnect();
+	SetState(ConnectionState::Error);
+}
+
+void Network::OnInvalidName(const packet_t Packet)
+{
+	LOG_INFO << "[connection] Invalid name (please use only a-z, A-Z, 0-9, [], (), $, ., _ and =).";
 	SetState(ConnectionState::Error);
 }
 

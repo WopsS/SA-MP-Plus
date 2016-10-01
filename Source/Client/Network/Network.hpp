@@ -41,6 +41,8 @@ private:
 
 	void OnDisconnectionNotification(const rakpacket_t Packet);
 
+	void OnInvalidName(const packet_t Packet);
+
 	void OnInvalidPassword(const rakpacket_t Packet);
 
 	void OnInvalidVersion(const packet_t Packet);

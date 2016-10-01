@@ -48,13 +48,12 @@ const bool Network::Startup()
 
 void Network::OnConnected(const packet_t PlusPacket)
 {
-	// TODO: Check for a valid name (a-z, A-Z, 0-9).
-
 	auto Packet = CONVERT_PACKET(PlusPacket, Packets::PlayerInitialize);
 
 	if (Packet->Version == SAMP_PLUS_PROTOCOL_VERSION)
 	{
-		LOG_INFO << "[connection] " << Packet->Name << " has joined the server (" << Packet->SystemAddress.ToString(true, ':') << ").";
+		// Try to add the player.
+		PlayerManager::GetInstance()->Add(Packet->Name, Packet->SystemAddress);
 	}
 	else
 	{
@@ -70,8 +69,8 @@ void Network::OnConnected(const packet_t PlusPacket)
 
 void Network::OnConnectionLost(const rakpacket_t Packet)
 {
-	// TODO: Get player name.
-	LOG_INFO << "[connection] " << Packet->SystemAddress.ToString(true, ':') << " left the server.";
+	// Remove the player.
+	PlayerManager::GetInstance()->Remove(Packet->SystemAddress);
 }
 
 void Network::OnIncomingConnection(const rakpacket_t Packet)
