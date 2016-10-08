@@ -7,3 +7,7 @@
 #endif
 
 #define _sampplus_included
+
+native bool:IsUsingSampPlus(playerid);
+
+forward OnPlusPlayerConnect(playerid);

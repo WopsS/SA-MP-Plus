@@ -1,4 +1,6 @@
 EXPORTS
+	OnPlayerConnect
+	OnPlayerDisconnect
 	Supports
 	Load
 	Unload

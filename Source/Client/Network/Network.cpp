@@ -68,8 +68,6 @@ const bool Network::IsConnected() const
 
 void Network::Process()
 {
-	// TODO: Find a way to change the server if it is somehow changed (s0beit), don't hook something from "samp.dll".
-
 	// Try to connect if we are not connected or we aren't connecting to the server.
 	if (IsConnected() == false && GetState() != ConnectionState::Connecting)
 	{
@@ -155,7 +153,7 @@ void Network::OnDisconnectionNotification(const rakpacket_t Packet)
 
 void Network::OnInvalidName(const packet_t Packet)
 {
-	LOG_INFO << "[connection] Invalid name (please use only a-z, A-Z, 0-9, [], (), $, ., _ and =).";
+	LOG_INFO << "[connection] Invalid name (please use only a-z, A-Z, 0-9, [], (), $, ., _ and =) or it is already a player with that name.";
 	SetState(ConnectionState::Error);
 }
 

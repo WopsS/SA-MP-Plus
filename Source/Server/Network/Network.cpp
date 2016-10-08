@@ -11,6 +11,11 @@ Network::Network()
 	RegisterRPCFunction(RPCId::PlayerInitialize, this, &Network::OnConnected);
 }
 
+void Network::CloseConnection(const RakNet::SystemAddress& Address, const bool SendNotification, const uint8_t OrderingChannel, const PacketPriority Priority)
+{
+	m_rakPeer->CloseConnection(Address, SendNotification, OrderingChannel, Priority);
+}
+
 void Network::Process()
 {
 	if (m_running == true)
@@ -69,7 +74,6 @@ void Network::OnConnected(const packet_t PlusPacket)
 
 void Network::OnConnectionLost(const rakpacket_t Packet)
 {
-	// Remove the player.
 	PlayerManager::GetInstance()->Remove(Packet->SystemAddress);
 }
 

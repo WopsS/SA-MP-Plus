@@ -1,4 +1,19 @@
 #include <stdafx.hpp>
+#include <Natives/Natives.hpp>
+
+extern void* pAMXFunctions;
+
+PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerConnect(int Id)
+{
+	PlayerManager::GetInstance()->OnConnect(static_cast<uint16_t>(Id));
+	return true;
+}
+
+PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerDisconnect(int Id, int Reason)
+{
+	PlayerManager::GetInstance()->OnDisconnect(static_cast<uint16_t>(Id));
+	return true;
+}
 
 PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports()
 {
@@ -7,6 +22,8 @@ PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports()
 
 PLUGIN_EXPORT bool PLUGIN_CALL Load(void** Data)
 {
+	pAMXFunctions = Data[PLUGIN_DATA_AMX_EXPORTS];
+
 	// Add default values from "server.cfg" which we will use in our plugin.
 	Settings::GetInstance()->Add("maxplayers", "50");
 	Settings::GetInstance()->Add("announce", "0");
@@ -57,13 +74,15 @@ PLUGIN_EXPORT void PLUGIN_CALL Unload()
 	sampgdk::Unload();
 }
 
-PLUGIN_EXPORT int PLUGIN_CALL AmxLoad(AMX* amx) 
+PLUGIN_EXPORT int PLUGIN_CALL AmxLoad(AMX* Amx)
 {
-	return AMX_ERR_NONE;
+	AmxManager::GetInstance()->Add(Amx);
+	return amx_Register(Amx, Natives::List.data(), Natives::List.size());
 }
 
-PLUGIN_EXPORT int PLUGIN_CALL AmxUnload(AMX* amx) 
+PLUGIN_EXPORT int PLUGIN_CALL AmxUnload(AMX* Amx)
 {
+	AmxManager::GetInstance()->Remove(Amx);
 	return AMX_ERR_NONE;
 }
 
