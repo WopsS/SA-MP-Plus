@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <list>
 
 #include <sampgdk/sampgdk.hpp>
 #include <SharedLib.hpp>
