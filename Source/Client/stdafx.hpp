@@ -17,4 +17,5 @@
 
 #include <Game/Game.hpp>
 #include <Hooks/Hooks.hpp>
+#include <Memory/Memory.hpp>
 #include <Network/Network.hpp>
