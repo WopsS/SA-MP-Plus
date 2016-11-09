@@ -37,7 +37,7 @@ before_script:
 
     - if [ ! -f "${RAKNET_DIR}/CMakeLists.txt" ]; then git clone https://github.com/WopsS/RakNet.git; fi
 
-    - wget https://github.com/premake/premake-core/releases/download/v5.0.0-alpha9/premake-5.0.0-alpha9-linux.tar.gz
+    - wget https://github.com/premake/premake-core/releases/download/v5.0.0-alpha10/premake-5.0.0-alpha10-linux.tar.gz
     - tar xzf premake-*-linux.tar.gz -C ${PREMAKE_DIR}
 
     - mkdir -p ${RAKNET_DIR}/Build

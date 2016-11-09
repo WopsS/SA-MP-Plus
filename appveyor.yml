@@ -33,7 +33,7 @@ before_build:
 
 build_script:
     - cd "%MINHOOK_DIR%\build\VC14"
-    - MSBuild.exe "MinHookVC15.sln" /verbosity:minimal /p:Configuration=%CONFIGURATION%
+    - MSBuild.exe "MinHookVC14.sln" /verbosity:minimal /p:Configuration=%CONFIGURATION%
 
     - cd "%RAKNET_DIR%\Build"
     - cmake .. -G "Visual Studio 14 2015" -DRAKNET_GENERATE_INCLUDE_ONLY_DIR=ON -DRAKNET_ENABLE_DLL=OFF -DRAKNET_ENABLE_SAMPLES=OFF
