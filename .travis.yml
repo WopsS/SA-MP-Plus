@@ -41,6 +41,7 @@ before_script:
     - tar xzf premake-*-linux.tar.gz -C ${PREMAKE_DIR}
 
     - mkdir -p ${RAKNET_DIR}/Build
+    - mkdir -p ${TRAVIS_BUILD_DIR}/Includes/Common
     - mkdir ${TRAVIS_BUILD_DIR}/Libs
 
 script:
