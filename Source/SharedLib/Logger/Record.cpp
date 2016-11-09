@@ -4,8 +4,11 @@
 Log::Record::Record(const Level Level)
 	: m_level(Level)
 {
-	auto Time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-	m_time = fmt::format(Settings::GetInstance()->Get<std::string>("logtimeformat"), *std::localtime(&Time));
+	std::time_t Time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+	std::ostringstream Stream;
+
+	Stream << std::put_time(std::localtime(&Time), Settings::GetInstance()->Get<std::string>("logtimeformat").c_str());
+	m_time = Stream.str();
 }
 
 const std::string Log::Record::Get(const bool IsCout) const
@@ -18,7 +21,7 @@ const std::string Log::Record::Get(const bool IsCout) const
 	}
 	else
 	{
-		Result << fmt::format("[{}] [{}] ", m_time, Log::LevelToString(m_level));
+		Result << m_time << " " << "[" << Log::LevelToString(m_level) << "] ";
 	}
 
 	Result << m_stream.str();

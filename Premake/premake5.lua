@@ -1,4 +1,4 @@
-require("premake", ">=5.0.0-alpha9")
+require("premake", ">=5.0.0-alpha10")
 
 local version = 
 { 
@@ -18,7 +18,7 @@ local protocolVersion = 1;
 local config =
 {
     includes={ "../Includes/Common", "../Source/SharedLib" },
-    libs={ "fmt", "RakNetLibStatic" },
+    libs={ "RakNetLibStatic" },
     libsPath={ "../Build/Libs", "../Libs" }
 }
 
@@ -70,7 +70,6 @@ workspace ("SA-MP+")
 
     filter { "configurations:Debug" }
         defines { "DEBUG" }
-        flags { "Symbols" }
         targetsuffix ("_d")
 
     filter { "configurations:Release" }
@@ -81,11 +80,12 @@ workspace ("SA-MP+")
         project ("Client")
             kind ("SharedLib")
             language ("C++")
+            pchheader ("stdafx.hpp")
+            pchsource ("../Source/Client/stdafx.cpp")
+            symbols ("On")
             targetdir ("../Build/Client")
             targetextension (".asi")
             targetname ("samp-plus")
-            pchheader ("stdafx.hpp")
-            pchsource ("../Source/Client/stdafx.cpp")
 
             includedirs { config["includes"], "$(DXSDK_DIR)Include", "../Includes/Client", "../Source/Client" }
             libdirs { config["libsPath"] }
@@ -97,10 +97,11 @@ workspace ("SA-MP+")
     project ("Server")
         kind ("SharedLib")
         language ("C++")
-        targetdir ("../Build/Server")
-        targetname ("samp-plus")
         pchheader ("stdafx.hpp")
         pchsource ("../Source/Server/stdafx.cpp")
+        symbols ("On")
+        targetdir ("../Build/Server")
+        targetname ("samp-plus")
 
         defines { "SAMPGDK_CPP_WRAPPERS", "SAMPGDK_AMALGAMATION" }
 
@@ -119,9 +120,10 @@ workspace ("SA-MP+")
         project ("SharedLib")
             kind ("StaticLib")
             language ("C++")
-            targetdir ("../Build/Libs")
             pchheader ("SharedLib.hpp")
             pchsource ("../Source/SharedLib/SharedLib.cpp")
+            symbols ("On")
+            targetdir ("../Build/Libs")
 
             includedirs { config["includes"] }
             libdirs { config["libsPath"] }

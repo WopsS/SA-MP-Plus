@@ -17,16 +17,6 @@ void Settings::Add(const std::string& Key, const std::string& Value)
 	{
 		m_settings.at(Key) = Value;
 	}
-
-	if (Key == "logtimeformat")
-	{
-		auto TimeFormat = Get<std::string>("logtimeformat");
-
-		TimeFormat = TimeFormat.replace(0, 1, "{:");
-		TimeFormat.replace(TimeFormat.length() - 1, 1, "}");
-
-		m_settings.at(Key) = TimeFormat;
-	}
 }
 
 const bool Settings::Exists(const std::string& Key) const

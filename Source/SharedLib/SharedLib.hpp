@@ -4,6 +4,7 @@
 #include <chrono>
 #include <ctime>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <iterator>
 #include <map>
@@ -12,9 +13,6 @@
 #include <regex>
 #include <sstream>
 #include <unordered_map>
-
-#include <fmt/format.h>
-#include <fmt/time.h>
 
 #include <Version.hpp>
 #include <Singleton/Singleton.hpp>

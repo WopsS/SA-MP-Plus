@@ -27,5 +27,8 @@ const std::string Log::LevelToString(const Level Level)
 		}
 	}
 
-	return fmt::format("UNKNOWN({})", static_cast<uint8_t>(Level));
+	std::ostringstream Result;
+	Result << "UNKNOWN(" << static_cast<uint32_t>(Level) << ")";
+
+	return Result.str();
 }
