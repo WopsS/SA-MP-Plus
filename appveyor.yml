@@ -42,7 +42,7 @@ build_script:
     - mklink "%APPVEYOR_BUILD_FOLDER%\Includes\Client\MinHook.h" "%MINHOOK_DIR%\include\MinHook.h"
     - mklink /D "%APPVEYOR_BUILD_FOLDER%\Includes\Common\RakNet" "%RAKNET_DIR%\include\RakNet"
 
-    - mklink "%APPVEYOR_BUILD_FOLDER%\Libs\libMinHook.x86.lib" "%MINHOOK_DIR%\build\VC15\lib\%CONFIGURATION%\libMinHook.x86.lib"
+    - mklink "%APPVEYOR_BUILD_FOLDER%\Libs\libMinHook.x86.lib" "%MINHOOK_DIR%\build\VC14\lib\%CONFIGURATION%\libMinHook.x86.lib"
     - mklink "%APPVEYOR_BUILD_FOLDER%\Libs\RakNetLibStatic.lib" "%RAKNET_DIR%\Build\Lib\LibStatic\%CONFIGURATION%\RakNetLibStatic.lib"
 
     - cd "%PREMAKE_DIR%"
