@@ -109,11 +109,11 @@ workspace ("SA-MP+")
         libdirs { config["libsPath"] }
         links { config["libs"], "SharedLib" }
 
-        files { "../Includes/Server/samp-plugin-sdk/amxplugin.cpp", "../Source/Server/**.cpp", "../Source/Server/**.hpp", "../Source/Server/**.def" }
+        files { "../Includes/Server/samp-plugin-sdk/amxplugin.cpp", "../Source/Server/**.cpp", "../Source/Server/**.hpp", "../Source/Server/**.def", "../Source/Server/sampgdk/*.c", "../Source/Server/sampgdk/*.h" }
         vpaths { ["*"] = "../Source/Server", ["Sdk"] = "../Includes/Server/samp-plugin-sdk/**" }
 
         -- Disable precompiled headers for this file.
-        filter { "files:../Includes/Server/samp-plugin-sdk/amxplugin.cpp" }
+        filter { "files:../Includes/Server/samp-plugin-sdk/amxplugin.cpp or ../Source/Server/**.c" }
             flags { "NoPCH" }
 
     group ("Dependencies")
