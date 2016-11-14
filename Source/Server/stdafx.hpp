@@ -3,7 +3,7 @@
 #include <array>
 #include <list>
 
-#include <sampgdk/sampgdk.h>
+#include <sampgdk/sampgdk.hpp>
 #include <SharedLib.hpp>
 
 #include <Amx/AmxManager.hpp>
